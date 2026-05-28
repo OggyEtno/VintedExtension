@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			padding: 20px;
+			width: 350px;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+
+		#keywordsContainer {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			margin-bottom: 15px;
+		}
+
+		.keyword-row {
+			display: flex;
+			gap: 8px;
+		}
+
+		.keyword-input {
+			flex: 1;
+			padding: 6px;
+		}
+
+		button {
+			cursor: pointer;
+			padding: 6px 10px;
+		}
+
+		.remove-btn {
+			background: #d9534f;
+			color: white;
+			border: none;
+		}
+
+		#addBtn {
+			margin-bottom: 10px;
+		}
+
+		#saveKeywordsBtn {
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+  	<h2>Mots-clés pour bundle</h2>
+	<div id="keywordsContainer"></div>
+
+	<button id="addBtn">+ Ajouter</button>
+	<button id="saveKeywordsBtn">Enregistrer</button>
+</body>
+
+<script src="popup.js"></script>
+</html>

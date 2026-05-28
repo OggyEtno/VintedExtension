@@ -1,0 +1,32 @@
+<style>
+    #vinted-extension-extPanel {
+        position: fixed !important;
+        top: 0px !important;
+        right: 20px !important;
+        z-index: 2147483647 !important;
+        pointer-events: auto !important;
+        all: initial;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        pointer-events: auto;
+    }
+
+    #vinted-extension-extPanel button {
+        all: unset;
+        display: inline-block;
+        margin-top: 8px;
+        padding: 8px 12px;
+        background: rgba(0,119,130,1);
+        background: rgba(var(--background-action-primary-prominent-idle),1);
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #vinted-extension-extPanel button:hover {
+        background: rgb(0 83 91);
+    }
+</style>
+
+<button id="createBundle">Créer lot</button>
