@@ -11,6 +11,10 @@
   "content_scripts": [
     {
       "js": ["content.js"],
+      "matches": ["https://www.vinted.fr/items/*"]
+    },
+    {
+      "js": ["content.js"],
       "matches": ["https://www.vinted.fr/member/*"],
       "exclude_matches": ["https://www.vinted.fr/member/*/bundles/*"]
     },

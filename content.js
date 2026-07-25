@@ -4,10 +4,27 @@ async function createBundle() {
     ) // Useless
     const A_keyword = (await chrome.storage.local.get('A_keyword')).A_keyword
     const sellerId = getSellerId()
+    if (sellerId === null) {
+        alert('Aucun vendeur id trouvé')
+        return
+    }
+
     fetchSellerItems(sellerId, nbItems, A_keyword, displayItemsBundle)
 
     function getSellerId() {
-        return window.location.pathname.match(/\/member\/(\d+)/)[1]
+        if (window.location.pathname.match(/items\/\d+/)) {
+            const A_memberLink = document.querySelectorAll('a[href^="/member/"]')
+            for (let memberLink of A_memberLink) {
+                let sellerIdMatches = memberLink.getAttribute("href").match(/\d+/)
+                if (sellerIdMatches !== null) {
+                    return sellerIdMatches[0]
+                }
+            }
+
+            return null
+        } else {
+            return window.location.pathname.match(/\/member\/(\d+)/)[1]
+        }
     }
 
     function normalize(str) {
@@ -77,20 +94,21 @@ async function createBundle() {
                 return
             }
 
-            callback(A_sellerItem)
+            callback(A_sellerItem, sellerId)
         })
         .catch(error => {
             console.error('Erreur :', error)
         })
     }
 
-    function displayItemsBundle(A_item) {
+    function displayItemsBundle(A_item, sellerId) {
         if (A_item.length <= 0) {
             alert('Rien trouvé !')
             return
         }
 
-        window.location.href += "/bundles/new?item_ids[]=" + A_item.join('&item_ids[]=')
+        window.location.href = 'https://www.vinted.fr/member/' + sellerId + '/bundles/new?item_ids[]=' + A_item.join('&item_ids[]=')
+        // window.location.href += "/bundles/new?item_ids[]=" + A_item.join('&item_ids[]=')
     }
 }
 
