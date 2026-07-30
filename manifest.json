@@ -21,6 +21,10 @@
     {
       "js": ["addBundleItemsClick.js"],
       "matches": ["https://www.vinted.fr/member/*/bundles/*"]
+    },
+    {
+      "js": ["hideAds.js"],
+      "matches": ["https://www.vinted.fr/*"]
     }
   ],
   "web_accessible_resources": [
