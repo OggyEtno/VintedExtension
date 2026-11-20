@@ -1,5 +1,5 @@
 document.body.addEventListener('contextmenu', function (e) {
-    const itmBoxContainer = e.target.closest('.new-item-box__container[data-testid]')
+    const itmBoxContainer = e.target.closest('[data-testid^="product-item-id-"]')
     if (!itmBoxContainer) return;
 
     const dataTestId = itmBoxContainer?.dataset.testid
