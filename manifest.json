@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Exécute un script sur les pages Vinted",
   "permissions": ["scripting", "activeTab", "declarativeNetRequest", "storage"],
-  "host_permissions": ["https://www.vinted.fr/*"],
+  "host_permissions": ["https://www.vinted.fr/*", "https://api.vinted.fr/*"],
   "action": {
     "default_popup": "popup.html"
   },
@@ -25,6 +25,12 @@
     {
       "js": ["hideAds.js"],
       "matches": ["https://www.vinted.fr/*"]
+    },
+    {
+      "matches": ["https://www.vinted.fr/*"],
+      "js": ["loadAllBundleItems.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "web_accessible_resources": [
@@ -36,10 +42,5 @@
       "resources": ["filterItemsList.html"],
       "matches": ["https://www.vinted.fr/*"]
     }
-  ],
-  "_comment1": "** To allow Vinted bundle to load all chosen items at once **",
-  "_comment2": "\/ Use declarativeNetRequest permission to do it           \/",
-  "background": {
-    "service_worker": "background.js"
-  }
+  ]
 }
