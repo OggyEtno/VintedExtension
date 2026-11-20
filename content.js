@@ -43,6 +43,13 @@ async function createBundle() {
     }
 
     function fetchSellerItems(sellerId, nbItems, A_keyword, callback) {
+        // Does not work everytime
+        // fetchSellerItemsSingleFetch(sellerId, nbItems, A_keyword, callback)
+        // Safer version
+        fetchSellerItemsMultiFetch(sellerId, nbItems, A_keyword, callback)
+    }
+
+    function fetchSellerItemsSingleFetch(sellerId, nbItems, A_keyword, callback) {
         const url = new URL("https://www.vinted.fr/api/v2/bundles/items")
 
         url.searchParams.append('user_id', sellerId)
@@ -91,6 +98,82 @@ async function createBundle() {
                 )
                 // alert(A_sellerItem.length + ' articles in console.log')
                 // console.log(A_sellerItem)
+                return
+            }
+
+            callback(A_sellerItem, sellerId)
+        })
+        .catch(error => {
+            console.error('Erreur :', error)
+        })
+    }
+
+    function fetchSellerItemsMultiFetch(sellerId, nbItems, A_keyword, callback) {
+        const url = new URL("https://www.vinted.fr/api/v2/bundles/items")
+
+        url.searchParams.append('user_id', sellerId)
+        url.searchParams.append('page', 1)
+        url.searchParams.append('per_page', nbItems) // Overwritten by background.js
+
+        fetchPage(url, 1, [], sellerId, nbItems, A_keyword, callback)
+    }
+
+    // Recursive function to iterate each pages result
+    function fetchPage(url, page, A_sellerItem, sellerId, nbItems, A_keyword, callback) {
+        url.searchParams.set('page', page)
+
+        fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau')
+            }
+
+            return response.json()
+        })
+        .then(response => {
+            // Merge this page items
+            for (let itm of response.items) {
+                if (hasKeyword(itm.title, A_keyword)) {
+                    A_sellerItem.push(itm.id)
+                }
+            }
+
+            const totalPages = response.pagination.total_pages
+
+            console.log(
+                `Page ${page}/${totalPages} - ` +
+                `${response.items.length} items récupérés - ` +
+                `${A_sellerItem.length} correspondances`
+            )
+
+            // Fetch next page if exists
+            if (page < totalPages) {
+                fetchPage(
+                    url,
+                    page + 1,
+                    A_sellerItem,
+                    sellerId,
+                    nbItems,
+                    A_keyword,
+                    callback
+                )
+
+                return
+            }
+
+            // All pages done
+
+            // Manage 100+ itm limit
+            if (A_sellerItem.length >= 100) {
+                alert('Ne gère pas les 100+ annonces trouvées')
+
                 return
             }
 
